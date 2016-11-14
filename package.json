@@ -1,0 +1,26 @@
+{
+  "name": "blockScrolling",
+  "version": "1.0.0",
+  "description": "npm i",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s-kobets/blockScrolling.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s-kobets/blockScrolling/issues"
+  },
+  "homepage": "https://github.com/s-kobets/blockScrolling#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-watch": "^4.3.10"
+  }
+}
