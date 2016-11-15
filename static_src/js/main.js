@@ -6,13 +6,13 @@ function scrollTo() {
 	var isAnimating  = false;
 
 	updateAnchors();
-	// curentAnchorTo();
+	curentAnchorTo();
 
 	function updateAnchors() {
 		anchors = [];
 		var elements = document.querySelectorAll('.anchor');
 		Array.prototype.forEach.call(elements, function(el, i){
-			anchors.push(el.getBoundingClientRect().top);
+			anchors.push(el.offsetTop);
 		});
 		console.log(anchors);
 	}
@@ -20,7 +20,7 @@ function scrollTo() {
 	function curentAnchorTo() {
 		// reload curentAnchor
 		var heightWindow = screen.height/2;
-		var curentReload = window.pageYOffset || document.documentElement.scrollTop;;
+		var curentReload = window.pageYOffset;
 		var index = 0;
 		if (curentReload > anchors[anchors.length - 1]) {
 			curentReload = anchors[anchors.length - 1];
@@ -41,6 +41,7 @@ function scrollTo() {
 				currentAnchor = index;
 			}
 		}
+		console.log('при скроле скролом', currentAnchor, heightWindow, curentReload);
 	}
 	
 	// For Chrome
@@ -49,11 +50,12 @@ function scrollTo() {
 	// For Firefox
 	window.addEventListener('DOMMouseScroll', blockScroll);
 
-	function blockScroll(e){
+	function blockScroll(e) { 
 		e.preventDefault();
 		e.stopPropagation();
 
 		curentAnchorTo();
+		console.log(isAnimating);
 
 		if (isAnimating) {
 			return false;
@@ -73,11 +75,29 @@ function scrollTo() {
 		} else if (currentAnchor < 0 ) {
 			currentAnchor = 0;
 		}
+		console.log('к нему крутим', currentAnchor);
 
-		isAnimating  = true;
+		var timePassed = window.pageYOffset;
+		var finish = parseInt(anchors[currentAnchor], 10);
 
-		console.log(delta, currentAnchor);
-		window.scrollBy(0, parseInt(anchors[currentAnchor], 10));
+		var timer = setInterval( function () {
+			if (finish >= timePassed) {
+				timePassed += 10;
+				if (timePassed > finish) {
+					clearInterval(timer);
+	    			return;
+				}
+				window.scroll(0, timePassed);
+
+			} else {
+				timePassed -= 10;
+				if (timePassed < finish) {
+					clearInterval(timer);
+	    			return;
+				}
+				window.scroll(0, timePassed);
+			}
+		}, 20);
 
 		isAnimating  = false;
 	};
