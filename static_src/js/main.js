@@ -1,4 +1,8 @@
-window.onresize = scrollTo();
+window.addEventListener('resize', function () {
+	scrollTo();
+});
+
+scrollTo();
 
 function scrollTo() {
 	var anchors = [];
