@@ -105,6 +105,7 @@
 				}
 			}, 20);
 
+			this.currentAnchor = currentAnchor;
 			this.isAnimating = isAnimating = false;
 		}
 	};

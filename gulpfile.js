@@ -18,7 +18,11 @@ var path = {
 gulp.task('script', function () {
     return gulp.src(path.src.js)
         .pipe(plumber())
-        .pipe(uglify())
+        .pipe(uglify({
+            compress: {
+                drop_console: true
+            }
+        }))
         .pipe(gulp.dest(path.public.js));
 });
 
