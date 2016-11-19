@@ -1,4 +1,5 @@
-var ScrollTo = {
+const ScrollTo = {
+	name: '',
 	anchors: [],
 	currentAnchor: 0,
 	isAnimating: false,
@@ -6,15 +7,15 @@ var ScrollTo = {
 		if (name === undefined) {
 			return;
 		} else {
-			this._updateAnchors(name);
-			// this._curentAnchorTo();
+			this.name = name;
+			this._updateAnchors();
 			this._eventScroll();
 		}
 	},
 
-	_updateAnchors: function (name) {
+	_updateAnchors: function () {
 		let anchors = [];
-		const elements = document.querySelectorAll(name);
+		const elements = document.querySelectorAll(this.name);
 		Array.prototype.forEach.call(elements, function(el, i){
 			anchors.push(el.offsetTop);
 		});
