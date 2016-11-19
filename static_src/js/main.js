@@ -2,15 +2,19 @@ var ScrollTo = {
 	anchors: [],
 	currentAnchor: 0,
 	isAnimating: false,
-	_init: function () {
-		console.log(this);
-		this._updateAnchors();
-		this._curentAnchorTo();
+	_init: function (name) {
+		if (name === undefined) {
+			return;
+		} else {
+			this._updateAnchors(name);
+			// this._curentAnchorTo();
+			this._eventScroll();
+		}
 	},
 
-	_updateAnchors: function () {
+	_updateAnchors: function (name) {
 		let anchors = [];
-		const elements = document.querySelectorAll('.anchor');
+		const elements = document.querySelectorAll(name);
 		Array.prototype.forEach.call(elements, function(el, i){
 			anchors.push(el.offsetTop);
 		});
@@ -105,19 +109,19 @@ var ScrollTo = {
 
 		this.currentAnchor = currentAnchor;
 		this.isAnimating = isAnimating = false;
+	},
+
+	_eventScroll: function () {
+		// For Chrome
+		window.addEventListener('mousewheel', ScrollTo._blockScroll.bind(ScrollTo));
+
+		// For Firefox
+		window.addEventListener('DOMMouseScroll', ScrollTo._blockScroll.bind(ScrollTo));
+
+		window.addEventListener('resize', function () {
+			ScrollTo._updateAnchors();
+		});
 	}
 };
-
-ScrollTo._init();
-
-	// For Chrome
-window.addEventListener('mousewheel', ScrollTo._blockScroll.bind(ScrollTo));
-
-// For Firefox
-window.addEventListener('DOMMouseScroll', ScrollTo._blockScroll.bind(ScrollTo));
-
-window.addEventListener('resize', function () {
-	ScrollTo._updateAnchors();
-});
 
 export default ScrollTo;

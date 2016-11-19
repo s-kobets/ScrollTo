@@ -7,7 +7,8 @@ module.exports = {
     entry: "./static_src/js/main.js",
     output: {
         path: __dirname + "/public/js",
-        filename: "main.js"
+        filename: "main.js",
+        library: "ScrollTo" // global name
     },
 
     watch: NODE_ENV == "development",
