@@ -3,7 +3,7 @@ const ScrollTo = {
 	anchors: [],
 	currentAnchor: 0,
 	isAnimating: false,
-	_init: function (name) {
+	init: function (name) {
 		if (name === undefined) {
 			return;
 		} else {
