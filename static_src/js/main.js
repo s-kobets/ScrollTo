@@ -9,6 +9,7 @@ const ScrollTo = {
 		} else {
 			this.name = name;
 			this._updateAnchors();
+			this._curentAnchorTo();
 			this._eventScroll();
 		}
 	},
