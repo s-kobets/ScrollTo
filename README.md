@@ -5,6 +5,8 @@
   не убирая полосу прокрутки страницы и учитывая положение 
   ползунка.
 
+	Пример использования в index.html
+
 # Install
 
 	npm i
@@ -19,4 +21,4 @@
 
 # Инициализация плагина
 
-	ScrollTo._init(selector); => //ScrollTo._init('.anchor');
+	ScrollTo.init(selector); => //ScrollTo.init('.anchor');
