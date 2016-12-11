@@ -24,7 +24,7 @@ module.exports = {
         new webpack.DefinePlugin({ //делаем ключ NODE_ENV доступный клиенту
             NODE_ENV : JSON.stringify(NODE_ENV),  //делает строковым типом
             LANG     : JSON.stringify('ru')
-        })  
+        })
     ],
 
     resolve: { //указывает где искать модули, например ./static_src/scripts/main.js

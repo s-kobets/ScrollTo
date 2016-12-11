@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/.bin/webpack",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack"
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
+    "tablet": "./node_modules/.bin/webpack-dev-server --host 192.168.0.10 --port 8080"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "eslint": "^3.4.0",
     "eslint-config-xo": "^0.15.4",
     "eslint-plugin-xo": "^0.5.1",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
   }
 }
