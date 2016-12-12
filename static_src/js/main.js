@@ -11,6 +11,7 @@ const ScrollTo = {
 			this._updateAnchors();
 			this._curentAnchorTo();
 			this._eventScroll();
+			this._eventTouch();
 		}
 	},
 
@@ -56,6 +57,7 @@ const ScrollTo = {
 	},
 
 	_blockScroll: function (e) {
+		console.log(e);
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -72,7 +74,7 @@ const ScrollTo = {
 
 		isAnimating  = true;
 		// Increase or reset current anchor
-		var delta = e.wheelDelta ? e.wheelDelta : -e.detail;
+		let delta = e.wheelDelta ? e.wheelDelta : -e.detail;
 		if (delta >= 0) {
 			currentAnchor--;
 		} else {
@@ -95,7 +97,7 @@ const ScrollTo = {
 				timePassed += 10;
 				if (timePassed > finish) {
 					clearInterval(timer);
-	    			return;
+						return;
 				}
 				window.scroll(0, timePassed);
 
@@ -103,7 +105,7 @@ const ScrollTo = {
 				timePassed -= 10;
 				if (timePassed < finish) {
 					clearInterval(timer);
-	    			return;
+						return;
 				}
 				window.scroll(0, timePassed);
 			}
@@ -115,14 +117,55 @@ const ScrollTo = {
 
 	_eventScroll: function () {
 		// For Chrome
-		window.addEventListener('mousewheel', ScrollTo._blockScroll.bind(ScrollTo));
+		window.addEventListener('mousewheel', function (e) {
+			console.log('mousewheel', ScrollTo._blockScroll);
+			ScrollTo._blockScroll(e);
+		}, false);
 
 		// For Firefox
-		window.addEventListener('DOMMouseScroll', ScrollTo._blockScroll.bind(ScrollTo));
+		// document.addEventListener('DOMMouseScroll', ScrollTo._blockScroll.bind(ScrollTo));
 
 		window.addEventListener('resize', function () {
 			ScrollTo._updateAnchors();
 		});
+	},
+
+	_eventTouch: function () {
+		let initialPoint;
+		let finalPoint;
+		document.addEventListener('touchstart', function (e) {
+			alert('touchstart');
+			e.preventDefault();
+			e.stopPropagation();
+			initialPoint = e.changedTouches[0];
+		}, false);
+
+		document.addEventListener('touchend', function (e) {
+			alert('touchend');
+			e.preventDefault();
+			e.stopPropagation();
+			finalPoint = e.changedTouches[0];
+			let xAbs = Math.abs(initialPoint.pageX - finalPoint.pageX);
+			let yAbs = Math.abs(initialPoint.pageY - finalPoint.pageY);
+			if (xAbs > 20 || yAbs > 20) {
+				if (xAbs > yAbs) {
+					if (finalPoint.pageX < initialPoint.pageX){
+						/*СВАЙП ВЛЕВО*/
+					} else{
+						/*СВАЙП ВПРАВО*/}
+				} else {
+					if (finalPoint.pageY < initialPoint.pageY){
+						/*СВАЙП ВВЕРХ*/
+						ScrollTo._blockScroll.bind(ScrollTo);
+						alert('вверх');
+					} else {
+						/*СВАЙП ВНИЗ*/
+						ScrollTo._blockScroll.bind(ScrollTo);
+						alert('вниз');
+					}
+				}
+			}
+		}, false);
 	}
 };
 
