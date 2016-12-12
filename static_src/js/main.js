@@ -56,8 +56,7 @@ const ScrollTo = {
 		console.log('при скроле скролом', currentAnchor, heightWindow, curentReload);
 	},
 
-	_blockScroll: function (e) {
-		console.log(e);
+	_blockScroll: function (e, touch) {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -71,16 +70,24 @@ const ScrollTo = {
 		if (isAnimating) {
 			return false;
 		}
-
-		isAnimating  = true;
-		// Increase or reset current anchor
-		let delta = e.wheelDelta ? e.wheelDelta : -e.detail;
-		if (delta >= 0) {
-			currentAnchor--;
+		// проверяем откуда вызываем функцию ( с touch устройства или нет)
+		if (!touch) {
+			let delta = e.wheelDelta ? e.wheelDelta : -e.detail;
+			if (delta >= 0) {
+				currentAnchor--;
+			} else {
+				currentAnchor++;
+			}
 		} else {
-			currentAnchor++;
+			if (touch > 0) {
+				currentAnchor++;
+			} else {
+				currentAnchor--;
+			}
 		}
 
+		isAnimating  = true;
+		
 		if (currentAnchor > (anchors.length - 1)) {
 			currentAnchor = anchors.length - 1;
 		} else if (currentAnchor < 0 ) {
@@ -118,7 +125,6 @@ const ScrollTo = {
 	_eventScroll: function () {
 		// For Chrome
 		window.addEventListener('mousewheel', function (e) {
-			console.log('mousewheel', ScrollTo._blockScroll);
 			ScrollTo._blockScroll(e);
 		}, false);
 
@@ -134,14 +140,12 @@ const ScrollTo = {
 		let initialPoint;
 		let finalPoint;
 		document.addEventListener('touchstart', function (e) {
-			alert('touchstart');
 			e.preventDefault();
 			e.stopPropagation();
 			initialPoint = e.changedTouches[0];
 		}, false);
 
 		document.addEventListener('touchend', function (e) {
-			alert('touchend');
 			e.preventDefault();
 			e.stopPropagation();
 			finalPoint = e.changedTouches[0];
@@ -156,12 +160,10 @@ const ScrollTo = {
 				} else {
 					if (finalPoint.pageY < initialPoint.pageY){
 						/*СВАЙП ВВЕРХ*/
-						ScrollTo._blockScroll.bind(ScrollTo);
-						alert('вверх');
+						ScrollTo._blockScroll(e, 1);
 					} else {
 						/*СВАЙП ВНИЗ*/
-						ScrollTo._blockScroll.bind(ScrollTo);
-						alert('вниз');
+						ScrollTo._blockScroll(e, -1);
 					}
 				}
 			}
