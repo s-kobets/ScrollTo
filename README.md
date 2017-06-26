@@ -1,24 +1,23 @@
-# Описание
+# Description
 	
-  Представленный код, дает возможность использовать скролл,
-  так чтобы происходил переход от блока к блоку, 
-  не убирая полосу прокрутки страницы и учитывая положение 
-  ползунка.
+  The code presented, makes it possible to use the scroll, so that there is a transition from block to block, without removing the scroll bar of the page and taking into account the position of the slider.
 
-	Пример использования в index.html
+# Dependencies
+  - NOT
 
-# Install
-
-	npm i
-
-# Start
-
-	npm run start
-
-# Build
-
-	npm run build
-
-# Инициализация плагина
-
-	ScrollTo.init(selector); => //ScrollTo.init('.anchor');
+# Initial
+```javascript
+  ScrollTo.init(selector)
+```
+# Example
+```javascript
+  <body>
+    <div class="anchor"><p class="h1">1</p></div>
+    <div class="anchor"><p class="h1">2</p></div>
+    <div class="anchor"><p class="h1">3</p></div>
+    <div class="anchor"><p class="h1">4</p></div>
+  </body>
+  <script>
+    ScrollTo.init('.anchor')
+  </script>
+```
