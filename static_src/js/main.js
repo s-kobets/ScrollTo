@@ -29,18 +29,19 @@ const ScrollTo = {
 		let anchors = this.anchors;
 		let currentAnchor = this.currentAnchor;
 		let heightWindow = screen.height/2;
-		let curentReload = window.pageYOffset;
+		let curentReload = window.pageYOffset;  // Текущая прокрутка сверху
 		let index = 0;
+    const length = anchors.length;
 
-		console.log(currentAnchor, anchors);
-		if (curentReload > anchors[anchors.length - 1]) {
-			curentReload = anchors[anchors.length - 1];
+		console.log('_curentAnchorTo', currentAnchor, anchors);
+		if (curentReload > anchors[length - 1]) {
+			curentReload = anchors[length - 1];
 		}
 
 		if (anchors.indexOf(curentReload) !== -1) {
 			currentAnchor = anchors.indexOf(curentReload);
 		} else {
-			for (let i = 0; i < anchors.length; i++) {
+			for (let i = 0; i < length; i++) {
 				if (anchors[i] > curentReload && anchors[i-1] < curentReload) {
 					index = i;
 				}
@@ -63,6 +64,7 @@ const ScrollTo = {
 		let isAnimating = this.isAnimating;
 		let currentAnchor = this.currentAnchor;
 		let anchors = this.anchors;
+		const length = anchors.length;
 
 		this._curentAnchorTo();
 		console.log(isAnimating, 'текущий курент', currentAnchor, anchors);
@@ -74,22 +76,22 @@ const ScrollTo = {
 		if (!touch) {
 			let delta = e.wheelDelta ? e.wheelDelta : -e.detail;
 			if (delta >= 0) {
-				currentAnchor--;
+				currentAnchor -= 1;
 			} else {
-				currentAnchor++;
+				currentAnchor += 1;
 			}
 		} else {
 			if (touch > 0) {
-				currentAnchor++;
+				currentAnchor += 1;
 			} else {
-				currentAnchor--;
+				currentAnchor -= 1;
 			}
 		}
 
-		isAnimating  = true;
-		
-		if (currentAnchor > (anchors.length - 1)) {
-			currentAnchor = anchors.length - 1;
+		isAnimating = true;
+
+		if (currentAnchor > (length - 1)) {
+			currentAnchor = length - 1;
 		} else if (currentAnchor < 0 ) {
 			currentAnchor = 0;
 		}
@@ -122,11 +124,44 @@ const ScrollTo = {
 		this.isAnimating = isAnimating = false;
 	},
 
+	_debounce(func, wait, immediate) {
+    	let timeout, args, context, timestamp, result;
+
+    	const later = function () {
+			var last = new Date().getTime() - timestamp;
+
+			if (last < wait && last >= 0) {
+				timeout = setTimeout(later, wait - last);
+			} else {
+				timeout = null;
+				if (!immediate) {
+					result = func.apply(context, args);
+					if (!timeout) context = args = null;
+				}
+			}
+		}
+
+		return function () {
+			context = this;
+			args = arguments;
+			timestamp = new Date().getTime();
+			var callNow = immediate && !timeout;
+			if (!timeout) timeout = setTimeout(later, wait);
+			if (callNow) {
+				result = func.apply(context, args);
+				context = args = null;
+			}
+
+			return result;
+		}
+	},
+
 	_eventScroll: function () {
 		// For Chrome
-		window.addEventListener('mousewheel', function (e) {
+    // событие колесика мыши и трекпада
+		window.addEventListener('mousewheel', this._debounce(function (e) {
 			ScrollTo._blockScroll(e);
-		}, false);
+		}, 100), false);
 
 		// For Firefox
 		// document.addEventListener('DOMMouseScroll', ScrollTo._blockScroll.bind(ScrollTo));

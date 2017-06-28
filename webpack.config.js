@@ -2,7 +2,6 @@
 //определение переменной окружения
 const NODE_ENV = process.env.NODE_ENV || "development";
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: "./static_src/js/main.js",
@@ -25,13 +24,6 @@ module.exports = {
         new webpack.DefinePlugin({ //делаем ключ NODE_ENV доступный клиенту
             NODE_ENV : JSON.stringify(NODE_ENV),  //делает строковым типом
             LANG     : JSON.stringify('ru')
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            inject : true,
-            devServer: 'http://localhost:8080',
-            template: './index.html',
-            chunks: 'filename'
         })
     ],
 
@@ -48,12 +40,10 @@ module.exports = {
 
     module: { //устанавливаем нужные модули -- npm i имя
         loaders: [{
-            test: /\.(js|jsx)$/,   //файлы заканчивающиеся на .js, применим babel      
+            test: /\.(js|jsx)$/,   //файлы заканчивающиеся на .js, применим babel
             loader: "babel"
-            // ,exclude: /(parsleyjs)/
         }]
     }
-
 };
 
 if (NODE_ENV == 'production'){  // для минификации кода
@@ -67,6 +57,6 @@ if (NODE_ENV == 'production'){  // для минификации кода
         })
     );
 }
-    
+
 
 
